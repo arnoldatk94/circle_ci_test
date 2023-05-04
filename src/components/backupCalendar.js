@@ -14,8 +14,8 @@ const localizer = momentLocalizer(moment);
 
 export default function CalendarComponent() {
   const [newEvent, setNewEvent] = useState({
-    property_id: "",
-    facility_id: "",
+    property_id: 1, // Hardcode first
+    facility_id: 1,
     title: "",
     start: "",
     end: "",
@@ -29,16 +29,8 @@ export default function CalendarComponent() {
   const [selectedFacility, setSelectedFacility] = useState("");
 
   // Filter by property then filter by facilities that property has
-  // const handleFacilityChange = (e) => {
-  //   setSelectedFacility(e.target.value);
-  // };
   const handleFacilityChange = (e) => {
-    const facilityId = parseInt(e.target.value);
-    setSelectedFacility(facilityId);
-    setNewEvent({
-      ...newEvent,
-      facility_id: facilityId,
-    });
+    setSelectedFacility(e.target.value);
   };
 
   const filteredFacilities =
@@ -50,8 +42,40 @@ export default function CalendarComponent() {
     setSelectedDay(date);
   }
 
+  // function handleSelectEvent(event) {
+  //   setSelectedDay(event.start);
+  // }
+
+  // function handleDeleteEvent(event) {
+  //   const confirmDelete = window.confirm(
+  //     "Are you sure you want to delete this event?"
+  //   );
+  //   if (confirmDelete) {
+  //     const updatedEvents = allEvents.filter((e) => e !== event);
+  //     setAllEvents(updatedEvents);
+  //   }
+  // }
+
+  const MyEvent = ({ event }) => {
+    const property = PROPERTIES.find(
+      (p) => p.property_id === event.property_id
+    );
+    const facility = FACILITY_TYPES.find((f) => f.id === event.facility_id);
+
+    return (
+      <div>
+        <div>{property.name}</div>
+        <div>{facility.name}</div>
+        <div>{event.title}</div>
+        <div>
+          {moment(event.start).format("h:mm A")} -{" "}
+          {moment(event.end).format("h:mm A")}
+        </div>
+      </div>
+    );
+  };
+
   const handleSelectEvent = (event) => {
-    // console.log(event);
     setSelectedDay(event.start);
     setSelectedEvent(event);
     setShowDetails(true);
@@ -73,6 +97,10 @@ export default function CalendarComponent() {
     setSelectedEvent(null);
     setShowDetails(false);
   };
+
+  // const handleAddEvent = () => {
+  //   setAllEvents([...allEvents, newEvent]);
+  // };
 
   useEffect(() => {
     if (newEvent && newEvent.facility_id) {
@@ -174,12 +202,36 @@ export default function CalendarComponent() {
         })
       : allEvents;
 
-  console.log(newEvent);
   return (
     <div>
       <h1>Calendar</h1>
       <h2>Add New Event</h2>
       <div style={{ display: "inline-flex", marginBottom: "20px" }}>
+        {/* <select
+          onChange={(e) =>
+            setNewEvent({ ...newEvent, property_id: parseInt(e.target.value) })
+          }
+        >
+          <option value="">Select a property</option>
+          {PROPERTIES.map((property) => (
+            <option key={property.property_id} value={property.property_id}>
+              {property.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={newEvent.facility_id}
+          onChange={(e) =>
+            setNewEvent({ ...newEvent, facility_id: e.target.value })
+          }
+        >
+          {FACILITY_TYPES.map((facility) => (
+            <option key={facility.id} value={facility.id}>
+              {facility.name}
+            </option>
+          ))}
+        </select> */}
+
         <select
           onChange={(e) => {
             setNewEvent({ ...newEvent, property_id: parseInt(e.target.value) });
@@ -250,15 +302,9 @@ export default function CalendarComponent() {
       </div>
       <button onClick={handleAddEvent}>Add Event</button>
       {showDetails && (
-        <div
-          className="event-details-popup"
-          style={{
-            backgroundColor: PROPERTIES.find(
-              (property) => property.property_id === selectedEvent.property_id
-            )?.color,
-          }}
-        >
+        <div className="event-details-popup">
           <h2>{selectedEvent.title}</h2>
+          {/* <h4>Property: {CONDO_NAMES[selectedEvent.property_id]}</h4> */}
           <h4>
             Property:{" "}
             {
@@ -268,55 +314,13 @@ export default function CalendarComponent() {
             }
           </h4>
 
-          <h4>
-            Facility: {FACILITY_TYPES[selectedEvent.facility_id - 1].name}
-          </h4>
+          <h4>Facility: {FACILITY_TYPES[selectedEvent.facility_id].name}</h4>
           <p>Start: {moment(selectedEvent.start).format("LLL")}</p>
           <p>End: {moment(selectedEvent.end).format("LLL")}</p>
           <button onClick={handleDeleteEvent}>Delete Event</button>
           <button onClick={handleCancel}>Cancel</button>
         </div>
       )}
-      <br />
-      {/* <input
-        type="text"
-        placeholder="Filter by Property ID"
-        value={propertyFilter}
-        onChange={handlePropertyFilter}
-      />
-      {propertyFilter && (
-        <input
-          type="text"
-          placeholder="Filter by Facility ID"
-          value={facilityFilter}
-          onChange={handleFacilityFilter}
-        />
-      )} */}
-      <select value={propertyFilter} onChange={handlePropertyFilter}>
-        <option value="">Filter by Property</option>
-        {PROPERTIES.map((property) => (
-          <option key={property.property_id} value={property.property_id}>
-            {property.name}
-          </option>
-        ))}
-      </select>
-      {propertyFilter && (
-        <div>
-          <select value={facilityFilter} onChange={handleFacilityFilter}>
-            <option value="">Filter by Facility</option>
-            {FACILITY_TYPES.filter((facility) =>
-              PROPERTIES.find(
-                (property) => property.property_id === Number(propertyFilter)
-              ).facilities.includes(facility.id)
-            ).map((facility) => (
-              <option key={facility.id} value={facility.id}>
-                {facility.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
       <Calendar
         localizer={localizer}
         events={filteredEvents}
@@ -337,7 +341,47 @@ export default function CalendarComponent() {
             },
           };
         }}
+
+        // onDoubleClickEvent={handleDeleteEvent}
+        // onSelectEvent={(event) => console.log(event)}
       />
+
+      <input
+        type="text"
+        placeholder="Filter by Property ID"
+        value={propertyFilter}
+        onChange={handlePropertyFilter}
+      />
+      {propertyFilter && (
+        <input
+          type="text"
+          placeholder="Filter by Facility ID"
+          value={facilityFilter}
+          onChange={handleFacilityFilter}
+        />
+      )}
+      {/* <table>
+        <thead>
+          <tr>
+            <th>Property ID</th>
+            <th>Facility ID</th>
+            <th>Title</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEvents.map((event) => (
+            <tr key={event.title}>
+              <td>{event.property_id}</td>
+              <td>{event.facility_id}</td>
+              <td>{event.title}</td>
+              <td>{event.start.toString()}</td>
+              <td>{event.end.toString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table> */}
     </div>
   );
 }

@@ -18,3 +18,8 @@ td {
   border: 1px solid #ccc;
   padding: 8px;
 }
+
+.event-details-popup {
+  border: 2px solid black;
+  padding: 10px;
+}
