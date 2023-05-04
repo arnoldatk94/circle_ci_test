@@ -1,0 +1,81 @@
+export const events = [
+  // month needs to start from 0 ==> Jan
+  // yyyy, mm, dd, hh, mm
+  {
+    property_id: 1,
+    facility_id: 1,
+    title: "Big Meeting",
+    start: new Date(2023, 4, 1, 9, 10),
+    end: new Date(2023, 4, 1, 21, 10),
+  },
+  {
+    property_id: 2,
+    facility_id: 2,
+    title: "Vacation",
+    start: new Date(2023, 4, 2, 9),
+    end: new Date(2023, 4, 2, 21),
+  },
+  {
+    property_id: 2,
+    facility_id: 1,
+    title: "Conference",
+    start: new Date(2023, 4, 3, 9),
+    end: new Date(2023, 4, 3, 21),
+  },
+  {
+    property_id: 1,
+    facility_id: 1,
+    title: "Meeting A",
+    start: new Date(2023, 4, 5, 9),
+    end: new Date(2023, 4, 5, 10),
+  },
+  {
+    property_id: 1,
+    facility_id: 2,
+    title: "Meeting B",
+    start: new Date(2023, 4, 6, 14),
+    end: new Date(2023, 4, 6, 15),
+  },
+  {
+    property_id: 1,
+    facility_id: 2,
+    title: "Meeting C",
+    start: new Date(2023, 4, 7, 16),
+    end: new Date(2023, 4, 7, 17),
+  },
+  {
+    property_id: 2,
+    facility_id: 1,
+    title: "Meeting D",
+    start: new Date(2023, 4, 8, 10),
+    end: new Date(2023, 4, 8, 11),
+  },
+  {
+    property_id: 2,
+    facility_id: 2,
+    title: "Meeting E",
+    start: new Date(2023, 4, 9, 13),
+    end: new Date(2023, 4, 9, 14),
+  },
+  {
+    property_id: 3,
+    facility_id: 1,
+    title: "Meeting F",
+    start: new Date(2023, 4, 10, 10),
+    end: new Date(2023, 4, 10, 11),
+  },
+  {
+    property_id: 3,
+    facility_id: 2,
+    title: "Meeting G",
+    start: new Date(2023, 4, 11, 14),
+    end: new Date(2023, 4, 11, 15),
+  },
+  {
+    property_id: 3,
+    facility_id: 2,
+    title: "Meeting H",
+    start: new Date(2023, 4, 12, 16),
+    end: new Date(2023, 4, 12, 17),
+  },
+];
