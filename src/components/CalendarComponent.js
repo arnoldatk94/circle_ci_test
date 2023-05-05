@@ -278,20 +278,7 @@ export default function CalendarComponent() {
         </div>
       )}
       <br />
-      {/* <input
-        type="text"
-        placeholder="Filter by Property ID"
-        value={propertyFilter}
-        onChange={handlePropertyFilter}
-      />
-      {propertyFilter && (
-        <input
-          type="text"
-          placeholder="Filter by Facility ID"
-          value={facilityFilter}
-          onChange={handleFacilityFilter}
-        />
-      )} */}
+
       <select value={propertyFilter} onChange={handlePropertyFilter}>
         <option value="">Filter by Property</option>
         {PROPERTIES.map((property) => (
